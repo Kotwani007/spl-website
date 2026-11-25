@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: spl-js-website
+    runtime: node
+    plan: 0.5c-512mb
+    region: singapore
+    rootDir: spl-js
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    disk:
+      name: spl-js-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 24.22.1
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_BOOTSTRAP_TOKEN
+        generateValue: true
+      - key: SPL_DATABASE_PATH
+        value: /var/data/db.sqlite3
+      - key: SITE_URL
+        sync: false

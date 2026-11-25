@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.*
+!.env.example
+media/
+*.log
+data/backups/
+.test-tmp/
+data/*.sqlite3
+data/*.sqlite3-wal
+data/*.sqlite3-shm

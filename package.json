@@ -1,0 +1,26 @@
+{
+  "name": "spl-js",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JavaScript rebuild of the Sindhi Premier League website",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env scripts/boot.js",
+    "test": "node --test",
+    "db:backup": "node scripts/backup-db.js",
+    "db:migrate": "node scripts/db-migrate.js",
+    "db:migrate:status": "node scripts/db-migrate.js --status",
+    "db:migrate:rollback": "node scripts/db-migrate.js --rollback",
+    "test:migrations": "node scripts/check-migrations.js",
+    "deploy:upload-db": "node scripts/upload-db-to-render.js"
+  },
+  "engines": {
+    "node": ">=22.13 <27"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "multer": "^2.0.2"
+  }
+}
