@@ -1,0 +1,18 @@
+</main>
+<footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-brand"><a class="brand" href="/"><span class="brand-mark">SPL</span><span class="brand-copy"><b>SINDHI PREMIER LEAGUE</b><small>ULHASNAGAR · COMMUNITY CRICKET</small></span></a><p>Community cricket. Competitive spirit. One league.</p></div>
+    <nav class="footer-links" aria-label="Footer navigation"><a href="/matches/">Matches</a><a href="/teams/">Teams</a><a href="/players/">Players</a><a href="/auction/">Auction</a><a href="/contact/">Contact</a></nav>
+  </div>
+  <div class="footer-bottom"><small>© <%= currentYear %> Sindhi Premier League · Ulhasnagar</small><a href="/about/">About SPL</a></div>
+</footer>
+<nav class="mobile-bottom-nav" aria-label="Quick navigation">
+  <a class="<%= page==='home'?'is-active':'' %>" href="/"><svg aria-hidden="true"><use href="/static/assets/icons.svg#home"></use></svg><span>Home</span></a>
+  <a class="<%= ['matches','match_detail','live_match','start_match'].includes(page)?'is-active':'' %>" href="/matches/"><svg aria-hidden="true"><use href="/static/assets/icons.svg#matches"></use></svg><span>Matches</span></a>
+  <a class="<%= page==='auction'?'is-active':'' %>" href="/auction/"><svg aria-hidden="true"><use href="/static/assets/icons.svg#auction"></use></svg><span>Auction</span></a>
+  <a class="<%= page==='leaderboards'?'is-active':'' %>" href="/leaderboards/"><svg aria-hidden="true"><use href="/static/assets/icons.svg#stats"></use></svg><span>Stats</span></a>
+  <button type="button" data-more-open aria-haspopup="dialog" aria-controls="more-menu"><svg aria-hidden="true"><use href="/static/assets/icons.svg#more"></use></svg><span>More</span></button>
+</nav>
+<script src="/static/js/site.js" defer></script>
+</body>
+</html>

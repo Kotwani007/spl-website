@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101c35">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="<%= metaDescription||'Sindhi Premier League — community cricket, match results, teams, players and statistics from Ulhasnagar.' %>">
+  <meta property="og:title" content="<%= title || 'Sindhi Premier League' %>">
+  <meta property="og:description" content="Community cricket. Competitive spirit. One league.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= canonicalUrl||'/' %>">
+  <link rel="canonical" href="<%= canonicalUrl||'/' %>">
+  <title><%= title || 'Sindhi Premier League' %></title>
+  <link rel="icon" href="/static/assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <link rel="stylesheet" href="/static/fonts/fonts.css">
+  <link rel="stylesheet" href="/static/css/site.css">
+  <link rel="stylesheet" href="/static/css/extensions.css">
+</head>
+<body data-page="<%= page %>">
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="Sindhi Premier League home">
+      <span class="brand-mark">SPL</span>
+      <span class="brand-copy"><b>SINDHI PREMIER LEAGUE</b><small>ULHASNAGAR · COMMUNITY CRICKET</small></span>
+    </a>
+    <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
+      <a class="<%= page==='home'?'is-active':'' %>" href="/">Home</a>
+      <a class="<%= ['matches','match_detail','live_match','start_match'].includes(page)?'is-active':'' %>" href="/matches/">Matches</a>
+      <a class="<%= ['teams','team_detail'].includes(page)?'is-active':'' %>" href="/teams/">Teams</a>
+      <a class="<%= ['players','player_detail'].includes(page)?'is-active':'' %>" href="/players/">Players</a>
+      <a class="<%= page==='leaderboards'?'is-active':'' %>" href="/leaderboards/">Stats</a>
+      <a class="<%= page==='auction'?'is-active':'' %>" href="/auction/">Auction</a>
+      <button class="nav-more" type="button" data-more-open aria-haspopup="dialog" aria-controls="more-menu">More <svg aria-hidden="true"><use href="/static/assets/icons.svg#chevron"></use></svg></button>
+    </nav>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<dialog id="more-menu" class="more-dialog" aria-labelledby="more-menu-title">
+  <div class="more-dialog-head"><div><p class="eyebrow">SINDHI PREMIER LEAGUE</p><h2 id="more-menu-title">Explore SPL</h2></div><button class="icon-button" type="button" data-dialog-close aria-label="Close menu">×</button></div>
+  <nav class="more-dialog-links" aria-label="More SPL pages">
+    <a href="/about/">About the league <span>→</span></a>
+    <a href="/sponsors/">Partners <span>→</span></a>
+    <a href="/register/">Registration <span>→</span></a>
+    <a href="/contact/">Contact <span>→</span></a>
+    <% if(user?.roles?.includes('team_owner')){ %><a href="/owner/">Team owner room <span>→</span></a><% } %>
+    <% if(user?.is_staff){ %><a href="/organiser/">Organiser desk <span>→</span></a><% }else if(!user?.is_authenticated){ %><a href="/login/">SPL sign-in <span>→</span></a><% } %>
+    <% if(user?.roles?.includes('super_admin')){ %><a href="/organiser/manage/?section=access">Access and roles <span>→</span></a><% } %>
+  </nav>
+</dialog>
+<main class="site-main">
+  <% if(message){ %><div class="notice notice-<%= message.type||'info' %>" role="status"><%= message.message %></div><% } %>

@@ -1,0 +1,91 @@
+<%- include('../partials/header') %>
+<% const t=ui.tournament; const seasonTitle=t?`Season ${t.season}`:'Sindhi Premier League'; const dateLabel=t&&(t.start_date||t.end_date)?[t.start_date&&date(t.start_date),t.end_date&&date(t.end_date)].filter(Boolean).join(' — '):'Tournament dates not recorded'; %>
+<section class="match-ticker" aria-label="Latest match activity">
+  <div class="ticker-label"><span class="ticker-live-dot"></span><b>MATCH CENTRE</b></div>
+  <div class="ticker-track">
+    <% if(ui.ticker.length){ ui.ticker.forEach(match=>{ const a=scoreFor(match,match.team_a); const b=scoreFor(match,match.team_b); const matchHref=match.status==='live'?`/matches/${match.id}/live/`:`/matches/${match.id}/`; %>
+      <a class="ticker-match <%= match.status==='live'?'is-live':'' %>" href="<%= matchHref %>">
+        <span class="ticker-status"><%= match.status==='live'?'LIVE':match.status_display.toUpperCase() %></span>
+        <span class="ticker-side"><b><%= match.team_a.short_name||match.team_a.name %></b><strong><%= a.score %></strong></span>
+        <span class="ticker-vs">VS</span>
+        <span class="ticker-side"><b><%= match.team_b.short_name||match.team_b.name %></b><strong><%= b.score %></strong></span>
+        <span class="ticker-date"><%= date(match.date) %></span>
+      </a>
+    <% })}else{ %><div class="ticker-empty">No match activity is recorded yet.</div><% } %>
+  </div>
+</section>
+
+<section class="home-hero">
+  <div class="home-hero-media"><img src="/static/assets/cricket-ground-960.webp" srcset="/static/assets/cricket-ground-960.webp 960w, /static/assets/cricket-ground-1920.webp 1920w" sizes="100vw" alt="Cricket ground under evening lights" fetchpriority="high"></div>
+  <div class="home-hero-overlay"></div>
+  <div class="home-hero-content">
+    <p class="hero-kicker">SINDHI PREMIER LEAGUE <span>·</span> ULHASNAGAR</p>
+    <h1>CRICKET.<br><em>COMMUNITY.</em><br>ONE LEAGUE.</h1>
+    <p class="hero-intro">The teams, players and match stories of Sindhi community cricket.</p>
+    <div class="hero-actions"><a class="btn btn-accent" href="/matches/">Explore matches <span aria-hidden="true">→</span></a><a class="btn btn-quiet" href="/teams/">Meet the teams</a></div>
+    <div class="hero-season"><span><%= t&&t.is_current?'CURRENT SEASON':'LATEST SEASON ON RECORD' %></span><b><%= seasonTitle %></b><small><%= dateLabel %></small></div>
+  </div>
+  <span class="hero-index" aria-hidden="true">SPL · <%= t?t.season:'—' %></span>
+</section>
+
+<section class="home-stat-ribbon" aria-label="League record totals">
+  <div><strong><%= teams_count %></strong><span>TEAMS IN RECORD</span></div>
+  <div><strong><%= matches_count %></strong><span>MATCHES RECORDED</span></div>
+  <div><strong><%= players_count %></strong><span>PLAYER PROFILES</span></div>
+  <div><strong><%= ui.seasons.length %></strong><span>SEASONS</span></div>
+</section>
+
+<section class="home-section home-results-layout">
+  <div class="home-results-main">
+    <div class="editorial-heading"><div><p class="eyebrow">THE SCOREBOARD</p><h2>Latest results</h2></div><a class="text-link" href="/matches/">All matches <span>→</span></a></div>
+    <div class="home-result-list">
+      <% if(ui.recent.length){ ui.recent.slice(0,4).forEach(match=>{ const a=scoreFor(match,match.team_a); const b=scoreFor(match,match.team_b); %>
+        <a class="home-result-row" href="/matches/<%= match.id %>/">
+          <div class="result-meta"><span><%= match.stage||'Match' %></span><time><%= date(match.date) %></time></div>
+          <div class="result-teams"><div><b><%= match.team_a.name %></b><small><%= a.overs?`${a.overs} ov`:'' %></small></div><strong><%= a.score %></strong></div>
+          <div class="result-teams"><div><b><%= match.team_b.name %></b><small><%= b.overs?`${b.overs} ov`:'' %></small></div><strong><%= b.score %></strong></div>
+          <p class="result-outcome"><%= match.result_text||'Result recorded' %></p>
+        </a>
+      <% })}else{ %><p class="editorial-empty">Completed match results will appear here when they are recorded.</p><% } %>
+    </div>
+  </div>
+  <aside class="home-standings">
+    <div class="editorial-heading compact"><div><p class="eyebrow"><%= t?`SEASON ${t.season}`:'SPL' %></p><h2>Points table</h2></div><a class="text-link" href="/matches/">Match centre <span>→</span></a></div>
+    <% if(ui.standings.length){ %><div class="table-scroll"><table class="standings-table"><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>L</th><th>Pts</th></tr></thead><tbody><% ui.standings.slice(0,7).forEach((row,index)=>{ %><tr><td><%= String(index+1).padStart(2,'0') %></td><td><a href="/teams/<%= row.team.id %>/"><%= row.team.short_name||row.team.name %></a></td><td><%= row.played %></td><td><%= row.won %></td><td><%= row.lost %></td><td><b><%= row.points %></b></td></tr><% }) %></tbody></table></div><p class="table-note">League-stage results only. Net run rate is not calculated from the available source records.</p><% }else{ %><p class="editorial-empty">Standings will appear when league-stage results are recorded.</p><% } %>
+  </aside>
+</section>
+
+<section class="home-section home-fixtures-section">
+  <div class="editorial-heading"><div><p class="eyebrow">WHAT'S NEXT</p><h2>Upcoming fixtures</h2></div><a class="text-link" href="/matches/">Fixture list <span>→</span></a></div>
+  <% if(ui.upcoming.length){ %><div class="fixture-strip"><% ui.upcoming.slice(0,4).forEach(match=>{ %><a class="fixture-item" href="/matches/<%= match.id %>/"><span class="fixture-stage"><%= match.stage||'Scheduled' %> · <%= date(match.date) %></span><strong><%= match.team_a.name %></strong><span class="fixture-vs">vs</span><strong><%= match.team_b.name %></strong><small><%= match.ground||t?.venue||'Venue not recorded' %></small></a><% }) %></div><% }else{ %><p class="editorial-empty inline">No upcoming fixtures are recorded in the supplied database.</p><% } %>
+</section>
+
+<section class="home-leaders-section">
+  <div class="home-section leaders-inner">
+    <div class="editorial-heading"><div><p class="eyebrow">SEASON FORM</p><h2>Players setting the pace</h2></div><a class="text-link" href="/leaderboards/">Full statistics <span>→</span></a></div>
+    <div class="leaders-editorial-grid">
+      <% const orange=ui.leaders.batting[0]; const purple=ui.leaders.bowling[0]; const mvp=ui.leaders.mvp[0]; %>
+      <article class="leader-feature leader-orange"><p class="eyebrow">ORANGE CAP · RUNS</p><% if(orange){ %><a href="/players/<%= orange.id %>/"><strong class="leader-value"><%= orange.runs %></strong><span class="leader-name"><%= orange.name %></span><small><%= orange.team %> · <%= orange.matches_played %> matches</small></a><% }else{ %><p class="editorial-empty">No batting leader is available for this season.</p><% } %></article>
+      <article class="leader-feature leader-purple"><p class="eyebrow">PURPLE CAP · WICKETS</p><% if(purple){ %><a href="/players/<%= purple.id %>/"><strong class="leader-value"><%= purple.wickets %></strong><span class="leader-name"><%= purple.name %></span><small><%= purple.team %> · <%= purple.matches_played %> matches</small></a><% }else{ %><p class="editorial-empty">No bowling leader is available for this season.</p><% } %></article>
+      <article class="leader-feature leader-mvp"><p class="eyebrow">MVP · RECORDED CONTRIBUTIONS</p><% if(mvp){ %><a href="/players/<%= mvp.id %>/"><strong class="leader-value"><%= mvp.mvp %></strong><span class="leader-name"><%= mvp.name %></span><small><%= mvp.runs %> runs · <%= mvp.wickets %> wickets</small></a><% }else{ %><p class="editorial-empty">MVP rankings need recorded player statistics.</p><% } %></article>
+    </div>
+  </div>
+</section>
+
+<section class="home-section teams-feature-section">
+  <div class="editorial-heading"><div><p class="eyebrow">THE LINE-UP</p><h2>Teams of SPL</h2></div><a class="text-link" href="/teams/">Explore all teams <span>→</span></a></div>
+  <% if(ui.teams.length){ %><div class="teams-editorial-grid"><% ui.teams.slice(0,8).forEach((team,index)=>{ %><a class="team-editorial-item" href="/teams/<%= team.id %>/"><span class="team-editorial-number"><%= String(index+1).padStart(2,'0') %></span><span class="team-editorial-mark"><%= team.short_name||initials(team.name) %></span><b><%= team.name %></b><small><%= team.player_count %> players</small><span class="team-arrow">↗</span></a><% }) %></div><% }else{ %><p class="editorial-empty">No team records are available for this season.</p><% } %>
+</section>
+
+<% if(ui.champions.length){ %><section class="champions-section"><div class="home-section champions-inner"><div><p class="eyebrow">SEASON ARCHIVE</p><h2>Finals in the record</h2></div><div class="champion-list"><% ui.champions.slice(0,3).forEach(match=>{ %><a href="/matches/<%= match.id %>/"><span><%= match.tournament.season %></span><b><%= match.winner?.name||'Result recorded' %></b><small><%= match.result_text||match.stage %></small></a><% }) %></div></div></section><% } %>
+
+<section class="home-section home-auction-band">
+  <div class="auction-band-copy"><p class="eyebrow">SPL PLAYER AUCTION</p><h2><%= auction_preview.auction?auction_preview.auction.name:'A new season starts at the auction.' %></h2><p><%= auction_preview.auction?`${auction_preview.auction.status_display} · ${auction_preview.auction.season?`Season ${auction_preview.auction.season}`:'SPL'}`:'Auction details will appear when organisers publish a player list.' %></p></div>
+  <a class="btn btn-navy" href="/auction/">Visit auction centre <span aria-hidden="true">→</span></a>
+</section>
+
+<section class="home-section home-sponsors-section">
+  <div class="editorial-heading"><div><p class="eyebrow">OUR PARTNERS</p><h2>Backing the game</h2></div><a class="text-link" href="/sponsors/">Meet our sponsors <span>→</span></a></div>
+  <div class="sponsor-row"><% if(sponsors.length){sponsors.forEach(s=>{ %><div class="sponsor-tile"><% if(s.logo_url){ %><img src="<%= s.logo_url %>" alt="<%= s.name %>" loading="lazy"><% }else{ %><b><%= s.name %></b><% } %></div><% })}else{ %><p class="editorial-empty">Sponsor announcements will appear here.</p><% } %></div>
+</section>
+<%- include('../partials/footer') %>

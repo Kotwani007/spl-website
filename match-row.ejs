@@ -1,0 +1,5 @@
+<% const scoreA = scoreFor(match, match.team_a); const scoreB = scoreFor(match, match.team_b); %><a class="match-row <%= match.status === 'live' ? 'is-live' : '' %>" href="/matches/<%= match.id %>/">
+  <div class="match-row-meta"><span<%= match.status === 'live' ? ' class="live-label"' : '' %>><%= statusLabel(match.status) %></span><span>Season <%= match.tournament.season %> · <%= match.stage || 'League match' %></span><span><%= date(match.date) %></span></div>
+  <div class="match-row-teams"><div class="match-side"><%- include('team-mark', { team: match.team_a }) %><span class="team-name"><%= match.team_a.name %></span><strong><%= scoreA.score %><% if(scoreA.overs){ %><small>(<%= scoreA.overs %>)</small><% } %></strong></div><div class="match-side"><%- include('team-mark', { team: match.team_b }) %><span class="team-name"><%= match.team_b.name %></span><strong><%= scoreB.score %><% if(scoreB.overs){ %><small>(<%= scoreB.overs %>)</small><% } %></strong></div></div>
+  <p class="match-row-result"><%= match.result_text || (match.status === 'live' ? 'Follow the action' : match.ground || 'Venue to be announced') %></p>
+</a>

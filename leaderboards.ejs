@@ -1,0 +1,11 @@
+<%- include('../partials/header') %>
+<section class="page-hero leaderboard-hero"><p class="eyebrow">SEASON STATISTICS · PLAYER RANKINGS</p><h1>Leaderboard <em>Legends</em></h1><p class="lead">The numbers behind the performances. Rankings update from imported scorecards and recorded live-match deliveries.</p></section>
+<section class="section leaderboard-section"><form class="filter-bar" method="get"><label>Season <select name="season"><option value="">All seasons</option><% seasons.forEach(s=>{ %><option value="<%= s.season %>"<%= Number(selectedSeason)===s.season?' selected':'' %>>Season <%= s.season %></option><% }) %></select></label><button class="btn btn-gold">Apply</button></form>
+<div class="leaderboard-actions"><a class="text-link" href="/leaderboards/export.csv<%= selectedSeason?`?season=${selectedSeason}`:'' %>">Download CSV ↓</a></div><div class="leaderboard-grid">
+<%- include('../partials/rank-card',{title:'MVP points',eyebrow:'MOST VALUABLE PLAYER',rows:stats.mvp,kind:'mvp',unit:'PTS'}) %>
+<%- include('../partials/rank-card',{title:'Most runs',eyebrow:'BATTING',rows:stats.batting,kind:'batting',unit:'RUNS'}) %>
+<%- include('../partials/rank-card',{title:'Most wickets',eyebrow:'BOWLING',rows:stats.bowling,kind:'bowling',unit:'WKTS'}) %>
+<%- include('../partials/rank-card',{title:'Most dot balls',eyebrow:'DISCIPLINE',rows:stats.dot_balls,kind:'dots',unit:'DOTS'}) %>
+<%- include('../partials/rank-card',{title:'Most appearances',eyebrow:'CONSISTENCY',rows:stats.appearances,kind:'appearances',unit:'MATCHES'}) %>
+<%- include('../partials/rank-card',{title:'Best fielder',eyebrow:'FIELDING',rows:stats.fielding,kind:'fielding',unit:'DISM.'}) %>
+</div></section><%- include('../partials/footer') %>

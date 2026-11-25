@@ -1,0 +1,5 @@
+<%- include('../partials/header') %>
+<% const t=ui.tournament; const dates=t&&(t.start_date||t.end_date)?[t.start_date&&date(t.start_date),t.end_date&&date(t.end_date)].filter(Boolean).join(' — '):'Dates not recorded'; %>
+<section class="page-hero"><p class="eyebrow"><%= t?`SEASON ${t.season}`:'SINDHI PREMIER LEAGUE' %></p><h1>Be part of the league.</h1><p class="lead"><%= dates %></p></section>
+<section class="section registration-content"><div class="data-panel"><p class="eyebrow">PLAYER AND TEAM REGISTRATION</p><h2>Registration information</h2><p class="body-copy">Registration details will be published by the organisers. Contact the league to express interest.</p><a class="btn btn-accent" href="/contact/">Contact organisers <span aria-hidden="true">→</span></a></div></section>
+<%- include('../partials/footer') %>

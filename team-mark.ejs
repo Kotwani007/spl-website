@@ -1,0 +1,1 @@
+<span class="team-mark <%= typeof size !== 'undefined' ? size : '' %>" aria-hidden="true"><% if (mediaUrl(team?.logo)) { %><img src="<%= mediaUrl(team.logo) %>" alt="" loading="lazy" width="48" height="48"><% } %><span class="image-fallback"><%= abbreviation(team) %></span></span>
